@@ -1,0 +1,189 @@
+{
+  "options": {
+    "syntax": "proto3"
+  },
+  "nested": {
+    "LocationType": {
+      "values": {
+        "UNKNOWN": 0,
+        "AIRPORT": 1,
+        "CITY": 2
+      }
+    },
+    "Location": {
+      "fields": {
+        "type": {
+          "type": "LocationType",
+          "id": 1
+        },
+        "name": {
+          "type": "string",
+          "id": 2
+        }
+      }
+    },
+    "Flight": {
+      "oneofs": {
+        "_maxStops": {
+          "oneof": [
+            "maxStops"
+          ]
+        },
+        "_departureTimeStart": {
+          "oneof": [
+            "departureTimeStart"
+          ]
+        },
+        "_departureTimeEnd": {
+          "oneof": [
+            "departureTimeEnd"
+          ]
+        },
+        "_arrivalTimeStart": {
+          "oneof": [
+            "arrivalTimeStart"
+          ]
+        },
+        "_arrivalTimeEnd": {
+          "oneof": [
+            "arrivalTimeEnd"
+          ]
+        }
+      },
+      "fields": {
+        "date": {
+          "type": "string",
+          "id": 2
+        },
+        "maxStops": {
+          "type": "int32",
+          "id": 5,
+          "options": {
+            "proto3_optional": true
+          }
+        },
+        "airline": {
+          "rule": "repeated",
+          "type": "string",
+          "id": 6
+        },
+        "departureTimeStart": {
+          "type": "int32",
+          "id": 8,
+          "options": {
+            "proto3_optional": true
+          }
+        },
+        "departureTimeEnd": {
+          "type": "int32",
+          "id": 9,
+          "options": {
+            "proto3_optional": true
+          }
+        },
+        "arrivalTimeStart": {
+          "type": "int32",
+          "id": 10,
+          "options": {
+            "proto3_optional": true
+          }
+        },
+        "arrivalTimeEnd": {
+          "type": "int32",
+          "id": 11,
+          "options": {
+            "proto3_optional": true
+          }
+        },
+        "source": {
+          "type": "Location",
+          "id": 13
+        },
+        "destination": {
+          "type": "Location",
+          "id": 14
+        },
+        "connectingAirport": {
+          "rule": "repeated",
+          "type": "string",
+          "id": 15
+        }
+      }
+    },
+    "Seat": {
+      "values": {
+        "UNKNOWN": 0,
+        "ECONOMY": 1,
+        "PREMIUM_ECONOMY": 2,
+        "BUSINESS": 3,
+        "FIRST": 4
+      }
+    },
+    "TripType": {
+      "values": {
+        "UNKNOWN": 0,
+        "ROUND_TRIP": 1,
+        "ONE_WAY": 2,
+        "MULTI_CITY": 3
+      }
+    },
+    "Passenger": {
+      "values": {
+        "UNKNOWN": 0,
+        "ADULT": 1,
+        "CHILD": 2,
+        "INFANT_IN_SEAT": 3,
+        "INFANT_ON_LAP": 4
+      }
+    },
+    "Unknown16": {
+      "fields": {
+        "UNKNOWN_1": {
+          "type": "int64",
+          "id": 1
+        }
+      }
+    },
+    "SearchDetails": {
+      "fields": {
+        "UNKNOWN_1": {
+          "type": "int32",
+          "id": 1
+        },
+        "UNKNOWN_2": {
+          "type": "int32",
+          "id": 2
+        },
+        "flights": {
+          "rule": "repeated",
+          "type": "Flight",
+          "id": 3
+        },
+        "passengers": {
+          "rule": "repeated",
+          "type": "Passenger",
+          "id": 8,
+          "options": {
+            "packed": false
+          }
+        },
+        "seat": {
+          "type": "Seat",
+          "id": 9
+        },
+        "UNKNOWN_14": {
+          "type": "int32",
+          "id": 14
+        },
+        "UNKNOWN_16": {
+          "type": "Unknown16",
+          "id": 16
+        },
+        "tripType": {
+          "type": "TripType",
+          "id": 19
+        }
+      }
+    }
+  }
+}

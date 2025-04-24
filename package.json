@@ -1,0 +1,36 @@
+{
+  "name": "google-flights-url-generator",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.mjs",
+  "scripts": {
+    "build": "tsup",
+    "generate-protobuf-json": "pbjs -t json ./src/googleFlightsFormat.proto > ./src/googleFlightsFormat.json"
+  },
+  "author": "John Shammas",
+  "license": "MIT",
+  "description": "A JavaScript/TypeScript utility for generating Google Flights search URLs based on search details.",
+  "dependencies": {
+    "btoa": "^1.2.1",
+    "buffer": "^6.0.3",
+    "express": "^5.1.0",
+    "protobufjs": "^7.4.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.14.1",
+    "ts-node": "^10.9.2",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jjshammas/google-flights-url-generator.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/jjshammas/google-flights-url-generator/issues"
+  },
+  "homepage": "https://github.com/jjshammas/google-flights-url-generator#readme"
+}

@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+// Destinations that are cities use Freebase IDs: https://www.wikidata.org/wiki/Property:P646
+enum LocationType {
+	UNKNOWN = 0;
+	AIRPORT = 1;
+	CITY = 2;
+}
+
+message Location {
+	LocationType type = 1;
+	string name = 2;
+}
+
+message Flight {
+	string date = 2;
+	optional int32 maxStops = 5;
+	repeated string airline = 6;
+	// Time values represent hours and are from 0-23. Example 3pm = 14
+	optional int32 departureTimeStart = 8;
+	optional int32 departureTimeEnd = 9;
+	optional int32 arrivalTimeStart = 10;
+	optional int32 arrivalTimeEnd = 11;
+	Location source = 13;
+	Location destination = 14;
+	repeated string connectingAirport = 15;
+}
+
+enum Seat {
+	UNKNOWN = 0;
+	ECONOMY = 1;
+	PREMIUM_ECONOMY = 2;
+	BUSINESS = 3;
+	FIRST = 4;
+}
+
+enum TripType {
+	UNKNOWN = 0;
+	ROUND_TRIP = 1;
+	ONE_WAY = 2;
+	MULTI_CITY = 3;
+}
+
+enum Passenger {
+	UNKNOWN = 0;
+	ADULT = 1;
+	CHILD = 2;
+	INFANT_IN_SEAT = 3;
+	INFANT_ON_LAP = 4;
+}
+
+message Unknown16 {
+	int64 UNKNOWN_1 = 1;
+}
+
+message SearchDetails {
+	int32 UNKNOWN_1 = 1;
+	int32 UNKNOWN_2 = 2;
+	repeated Flight flights = 3;
+	repeated Passenger passengers = 8 [packed = false];
+	Seat seat = 9;
+	int32 UNKNOWN_14 = 14;
+	Unknown16 UNKNOWN_16 = 16;
+	TripType tripType = 19;
+}
