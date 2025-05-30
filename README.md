@@ -1,69 +1,78 @@
-# google-flights-url-generator
+# Google Flight URL Generator (REST API)
 
-A JavaScript/TypeScript utility for generating Google Flights search URLs based on search details.
+This project is a REST API-based Google Flights URL generator built using the logic from the original [Google Flights URL Generator](https://github.com/jjshammas/google-flights-url-generator) by [jjshammas](https://github.com/jjshammas).
 
-## Why I built this
+## 🔄 Key Difference
 
-Google Flights is an incredible utility for researching flight bookings across airlines. In addition to having tons of data and an efficient experience, the search results are very portable. It is one of the only travel booking websites where you can copy your browser URL at any point, send it to a friend, and have them see exactly the same search state from where you left off.
+Unlike the original project, which is designed as a JavaScript module, this project provides a **standalone REST API**. This approach makes it easier to use the functionality in environments that are not JavaScript-based, particularly Java applications.
 
-Unfortunately, the syntax for generating these URLs, at first glance, is complicated and opaque. For example:
+## ❓ Why This Project?
 
-```
-// JFK to LHR, Feb 18, one way
-https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTAyLTE4agcIARIDSkZLcgcIARIDTEhSQAFIAXABggELCP___________wGYAQI
-```
+While building a Java application, I needed the ability to generate Google Flights URLs. The original tool was JavaScript-based and could not be used directly in a Java environment. To address this, I created a REST API that wraps the original logic, enabling language-agnostic integration.
 
-While the search querystring looks complicated, it is actually a fairly simple implementation of [Protocol Buffers](https://protobuf.dev)—a mechanism designed by Google for serializing data as an alternative to JSON or other syntaxes. Protobuf produces incredibly short outputs by separating schema and data, and is what allows Google to store so much information in just the URL.
+## 🚀 How to Run
 
-This project is a simple implementation of the Protobuf library, using a schema derived from manual manipulation of Google Flights search queries to reverse engineer certain fields.
-
-## Example
-
-```typescript
-import {
-	convertSearchData,
-	LocationType,
-	Seat,
-	TripType,
-	Passenger,
-} from "google-flights-url-generator";
-
-window.open(
-	convertSearchData(
-		seat: Seat.ECONOMY,
-		passengers: [Passenger.ADULT, Passenger.ADULT],
-		tripType: TripType.ONE_WAY,
-		flights: [{
-			source: {
-				type: LocationType.AIRPORT,
-				name: "JFK"
-			},
-			destination: {
-				type: LocationType.AIRPORT,
-				name: "LHR"
-			},
-			date: "2027-03-10",
-			airline: ["UA", "BA"],
-			maxStops: 1
-		}],
-	).URL
-)
-```
-
-## Development
-
-The Protobuf schema as used by Google Flights is defined in `src/googleFlightsFormat.proto`. This must be "compiled" to a JSON file to be used synchronously during runtime. This is done with the command:
+To quickly run the API using Docker:
 
 ```bash
-npm run generate-protobuf-json
+docker pull ghcr.io/khalifarsm/google-flight-url-generator:latest
+docker run -p 3000:3000 ghcr.io/khalifarsm/google-flight-url-generator:latest
 ```
 
-[`protobufjs-cli`](https://www.npmjs.com/package/protobufjs-cli) must be installed. Unfortunately, this installation is currently manual, as there are challenges running this command with `npx`: since the intended CLI usage includes piping `stdout` to a file, the `npx` warnings get written to the file instead.
+## 📱 API Endpoint
 
-## Contributing
+**POST** `http://localhost:3000/google`
 
-Contributions are welcome! Feel free to submit issues or pull requests to improve the project.
+### Request Headers
 
-## License
+```
+Content-Type: application/json
+```
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+### Request Body Example
+
+```json
+{
+  "flights": [
+    {
+      "date": "{{FROM_DATE}}",
+      "source": { "type": 1, "name": "{{FROM}}" },
+      "destination": { "type": 1, "name": "{{TO}}" }
+    },
+    {
+      "date": "{{TO_DATE}}",
+      "source": { "type": 1, "name": "{{TO}}" },
+      "destination": { "type": 1, "name": "{{FROM}}" }
+    }
+  ],
+  "seat": 1,
+  "passengers": [1],
+  "tripType": 1
+}
+```
+
+### Parameters Description
+
+* `flights`: An array of flight segments with dates and airport codes.
+* `seat`: Cabin class (e.g., 1 = Economy).
+* `passengers`: List of passenger counts (e.g., `[1]` for one adult).
+* `tripType`: Type of trip (e.g., 1 = round trip).
+
+## 🔗 Response
+
+Returns a JSON object containing a valid Google Flights URL for the specified trip.
+
+```json
+{
+  "url": "https://www.google.com/flights?..."
+}
+```
+
+## 🔧 Built With
+
+* Node.js / Express
+* Docker
+
+## 📄 License
+
+This project respects the original [MIT License](https://github.com/jjshammas/google-flights-url-generator/blob/main/LICENSE) of the upstream repository.
